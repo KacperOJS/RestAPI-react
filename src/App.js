@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect, useRef, useState } from 'react';
+import { LoginContext } from './context/LoginContext';
+import Profile from './Pages/Profile';
+import Login from './Pages/Login';
 const App = () => {
   const [activeComponent, setActiveComponent] = useState(null);
-  const [activeFetch, setActiveFetch] = useState([
+  const [showprofile,setshowprofile]=useState(false);
+  const[username,setusername]=useState('');
+  const [activeFetch, setActiveFetch] = useState([ 
     {
       name: 'Kacper',
       age: 24,
       info: 'Junior',
     }
   ]);
+
 
  
   const saveDataToServer = async () => {
@@ -30,7 +35,15 @@ const App = () => {
       console.error('Error:', error);
     }
   };
+const Logowanie =()=>{
 
+}
+const zatwierdz = (e)=>{
+e.preventDefault();
+console.log('dziala input');
+document.getElementById('login').value='';
+document.getElementById('haslo').value='';
+}
   const dodajUsera = (e) => {
     e.preventDefault();
     const name = document.getElementById('name').value;
@@ -74,7 +87,9 @@ const App = () => {
 
   return (
     <div className='container'>
-      <div className='info'>
+	<LoginContext.Provider value={{username,setusername,setshowprofile}}>
+		{showprofile ? <Profile/> : <Login/>}
+      {/* <div className='info'>
         {activeFetch.map((comp, idx) => {
           return (
             <p key={idx}>
@@ -120,6 +135,10 @@ const App = () => {
       <button onClick={saveDataToServer}>Zapisz dane na serwerze</button>
       <button onClick={deleteDataFromServer}>usun dane na serwerze</button>
 	  </form>
+
+	  {/* Login Page */}<br/><br/> 
+	  
+	  </LoginContext.Provider>
     </div>
   );
 };
